@@ -1,6 +1,7 @@
 package org.example.testwallet.conroller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.testwallet.exception.InsufficientFundsException;
 import org.example.testwallet.model.OperationType;
 import org.example.testwallet.model.WalletOperation;
 import org.example.testwallet.service.WalletService;
@@ -61,7 +62,7 @@ class WalletControllerTest {
         operation.setOperationType(OperationType.WITHDRAW);
         operation.setAmount(50L);
 
-        doThrow(new RuntimeException("Insufficient funds")).when(walletService).updateBalance(any());
+        doThrow(new InsufficientFundsException("Insufficient funds")).when(walletService).updateBalance(any());
 
         mockMvc.perform(post("/api/v1/wallet")
                         .contentType(MediaType.APPLICATION_JSON)
